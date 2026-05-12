@@ -1,0 +1,7 @@
+id = "grave-theme"
+name = "Grave"
+description = "Modern light and dark color themes built by Grave Office."
+version = "0.0.1"
+schema_version = 1
+authors = ["graveoffice"]
+repository = "https://github.com/graveoffice/theme"

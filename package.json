@@ -1,0 +1,90 @@
+{
+  "name": "@grave/theme",
+  "displayName": "Grave Theme",
+  "description": "Grave color themes for VS Code, Cursor, Zed, and Shiki",
+  "version": "0.0.1",
+  "publisher": "graveoffice",
+  "galleryBanner": {
+    "color": "#141415",
+    "theme": "dark"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/graveoffice/theme"
+  },
+  "bugs": {
+    "url": "https://github.com/graveoffice/theme/issues"
+  },
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "grave",
+    "dark",
+    "light"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Grave Light",
+        "uiTheme": "vs",
+        "path": "./themes/grave-light.json"
+      },
+      {
+        "label": "Grave Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/grave-dark.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "ts-node src/build.ts",
+    "test": "npm run build && ts-node src/test.ts",
+    "start": "nodemon --watch src --ext ts --exec npm run build",
+    "package": "ts-node src/package-vsix.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.2",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "themes",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    },
+    "./grave-dark": {
+      "types": "./dist/grave-dark.d.mts",
+      "default": "./dist/grave-dark.mjs"
+    },
+    "./grave-light": {
+      "types": "./dist/grave-light.d.mts",
+      "default": "./dist/grave-light.mjs"
+    },
+    "./grave-dark-vibrant": {
+      "types": "./dist/grave-dark-vibrant.d.mts",
+      "default": "./dist/grave-dark-vibrant.mjs"
+    },
+    "./grave-light-vibrant": {
+      "types": "./dist/grave-light-vibrant.d.mts",
+      "default": "./dist/grave-light-vibrant.mjs"
+    },
+    "./themes/*": "./themes/*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
