@@ -1,0 +1,10 @@
+{
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "build:watch",
+      "command": "npm start",
+      "description": "Rebuild theme JSON/exports on change (nodemon)"
+    }
+  ]
+}
