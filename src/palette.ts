@@ -182,9 +182,9 @@ export const light: Roles = {
     elevated: gray["040"],
   },
   fg: {
-    // Soft ink hierarchy, all Grave masters: no pure black text (Kanso
-    // Pearl / Gruvbox Material soft-contrast philosophy).
-    base: gray["900"],
+    // Ink hierarchy, all Grave masters. Base sits at the warm-black master
+    // for a Pierre-grade ink on paper; the ladder below stays soft.
+    base: gray["1000"],
     fg1: gray["800"],
     fg2: gray["700"],
     fg3: gray["500"],
@@ -199,10 +199,13 @@ export const light: Roles = {
     elevated: gray["100"],
   },
   accent: {
-    primary: blue["600"],
-    link: blue["600"],
-    subtle: blue["100"],
-    contrastOnAccent: gray["040"], // warm white carries on the lotus blue ink
+    // Neutral chrome: the accent IS ink. Gorgoroth treats gray as its only
+    // accent, Kanso's minimal mode strips chrome color, and Pierre keeps
+    // the neutral ramp doing all UI work. Color lives in states/syntax.
+    primary: gray["1000"],
+    link: gray["1000"],
+    subtle: gray["200"],
+    contrastOnAccent: gray["040"], // warm white on ink buttons
   },
   states: {
     merge: indigo["600"],
@@ -259,11 +262,10 @@ export const dark: Roles = {
     elevated: gray["1020"],
   },
   fg: {
-    // Descends the Grave masters directly. No pure white: Kanagawa Dragon
-    // (#c5c9c5), Kanso (#C5C9C7) and Gorgoroth (#c1c1c1) all cap the dark
-    // foreground well below white; gray 200 keeps that restraint while
-    // holding up on our blacker ground.
-    base: gray["200"],
+    // Descends the Grave masters directly. Base sits at gray 100 for a
+    // Pierre-grade near-white ink on the black ground, while staying short
+    // of pure white; the ladder below keeps the references' restraint.
+    base: gray["100"],
     fg1: gray["300"],
     fg2: gray["400"],
     fg3: gray["500"],
@@ -278,10 +280,12 @@ export const dark: Roles = {
     elevated: gray["980"],
   },
   accent: {
-    primary: blue["500"],
-    link: blue["500"],
-    subtle: blue["950"],
-    contrastOnAccent: gray["1040"],
+    // Neutral chrome, mirroring the light theme: near-white ink accent on
+    // the black ground, warm-gray washes for selections and hovers.
+    primary: gray["100"],
+    link: gray["100"],
+    subtle: gray["800"],
+    contrastOnAccent: gray["1000"], // ink text on near-white buttons
   },
   states: {
     merge: indigo["500"],

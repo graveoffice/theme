@@ -111,7 +111,7 @@ export function makeTheme(name: string, kind: "light" | "dark", c: Roles): VSCod
       // Git colors
       "gitDecoration.addedResourceForeground": c.states.success,
       "gitDecoration.conflictingResourceForeground": c.states.warn,
-      "gitDecoration.modifiedResourceForeground": c.accent.primary,
+      "gitDecoration.modifiedResourceForeground": c.states.warn,
       "gitDecoration.deletedResourceForeground": c.states.danger,
       "gitDecoration.untrackedResourceForeground": c.states.success,
       "gitDecoration.ignoredResourceForeground": c.fg.fg3,
