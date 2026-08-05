@@ -1,0 +1,10 @@
+# The .cursor/Dockerfile installs system packages and Node only; it copies no
+# repository files (Cursor checks out the repo separately after the image is
+# built). Since build.context is the repo root, this trims the Docker build
+# context sent to the daemon by excluding history, dependencies, and artifacts.
+.git
+node_modules
+dist
+build
+*.vsix
+.DS_Store
