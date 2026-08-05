@@ -1,0 +1,15 @@
+{
+  "name": "grave-theme",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "theme-watch",
+      "command": "npm start",
+      "description": "Rebuilds VS Code/Cursor/Zed theme JSON and dist exports when src/ changes"
+    }
+  ]
+}
