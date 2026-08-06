@@ -20,6 +20,10 @@
  * key. Ramp structure follows Pierre; restraint (near-black grounds, quiet
  * punctuation, sparse color) follows base16 Black Metal (Gorgoroth) and
  * Gruvbox Material's soft-contrast philosophy.
+ *
+ * Syntax/state chroma is lifted one notch via `SYNTAX_SAT`, matching Kanso's
+ * saturated mode (~+20% HSL saturation): inkier token color without neon
+ * and without putting hue back into chrome (accent roles stay on gray).
  */
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -38,6 +42,53 @@ function mix(a: string, b: string, t: number): string {
   const [br, bg, bb] = hexToRgb(b);
   return rgbToHex(ar + (br - ar) * t, ag + (bg - ag) * t, ab + (bb - ab) * t);
 }
+
+function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+  const R = r / 255;
+  const G = g / 255;
+  const B = b / 255;
+  const max = Math.max(R, G, B);
+  const min = Math.min(R, G, B);
+  const l = (max + min) / 2;
+  if (max === min) return [0, 0, l];
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === R) h = ((G - B) / d + (G < B ? 6 : 0)) / 6;
+  else if (max === G) h = ((B - R) / d + 2) / 6;
+  else h = ((R - G) / d + 4) / 6;
+  return [h, s, l];
+}
+
+function hslToRgb(h: number, s: number, l: number): [number, number, number] {
+  if (s === 0) {
+    const v = l * 255;
+    return [v, v, v];
+  }
+  const hue2rgb = (p: number, q: number, t: number) => {
+    let T = t;
+    if (T < 0) T += 1;
+    if (T > 1) T -= 1;
+    if (T < 1 / 6) return p + (q - p) * 6 * T;
+    if (T < 1 / 2) return q;
+    if (T < 2 / 3) return p + (q - p) * (2 / 3 - T) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  return [hue2rgb(p, q, h + 1 / 3) * 255, hue2rgb(p, q, h) * 255, hue2rgb(p, q, h - 1 / 3) * 255];
+}
+
+/** Relative HSL saturation boost (Kanso saturated mode ≈ 0.2). */
+function saturate(hex: string, amount: number): string {
+  const [r, g, b] = hexToRgb(hex);
+  const [h, s, l] = rgbToHsl(r, g, b);
+  const [nr, ng, nb] = hslToRgb(h, Math.min(1, s * (1 + amount)), l);
+  return rgbToHex(nr, ng, nb);
+}
+
+/** How much extra chroma syntax/state hues carry. Chrome stays on gray. */
+const SYNTAX_SAT = 0.22;
 
 // Grave master neutrals (provided stops marked). Non-provided stops are warm
 // interpolations between the neighboring Grave masters.
@@ -85,22 +136,24 @@ type Ramp = {
  * Derive a full 050-950 ramp from a hue's two masters.
  * 050-200 are paper washes of the ink (diff/selection tints on light);
  * 300-400 are pastel lifts of the anchor (ANSI brights, hints on dark);
- * 500 is the anchor, 600 is the ink; 700-800 deepen the ink;
- * 900-950 are shadow washes of the anchor (subtle backgrounds on dark).
+ * 500 is the (saturated) anchor, 600 is the (saturated) ink; 700-800
+ * deepen the ink; 900-950 are shadow washes of the anchor.
  */
 function ramp(anchor: string, ink: string): Ramp {
+  const a = saturate(anchor, SYNTAX_SAT);
+  const i = saturate(ink, SYNTAX_SAT);
   return {
-    "050": mix(ink, warmWhite, 0.9),
-    "100": mix(ink, warmWhite, 0.82),
-    "200": mix(ink, warmWhite, 0.62),
-    "300": mix(anchor, warmWhite, 0.38),
-    "400": mix(anchor, warmWhite, 0.18),
-    "500": anchor,
-    "600": ink,
-    "700": mix(ink, warmBlack, 0.18),
-    "800": mix(ink, warmBlack, 0.38),
-    "900": mix(anchor, warmBlack, 0.6),
-    "950": mix(anchor, warmBlack, 0.78),
+    "050": mix(i, warmWhite, 0.9),
+    "100": mix(i, warmWhite, 0.82),
+    "200": mix(i, warmWhite, 0.62),
+    "300": mix(a, warmWhite, 0.38),
+    "400": mix(a, warmWhite, 0.18),
+    "500": a,
+    "600": i,
+    "700": mix(i, warmBlack, 0.18),
+    "800": mix(i, warmBlack, 0.38),
+    "900": mix(a, warmBlack, 0.6),
+    "950": mix(a, warmBlack, 0.78),
   };
 }
 
